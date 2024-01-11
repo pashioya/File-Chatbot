@@ -3,20 +3,26 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
-import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { UnstructuredDirectoryLoader, UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 
 /* Name of directory to retrieve your files from 
-   Make sure to add your PDF files inside the 'docs' folder
+   Make sure to add your files inside the 'docs' folder
 */
 const filePath = 'docs';
 
 export const run = async () => {
   try {
     const options = {
-      apiKey: "MY_API_KEY",
       apiUrl: "http://localhost:8000/general/v0/general",
   };
+
+    /*load raw docs from the all files in the directory */
+    // const directoryLoader = new DirectoryLoader(filePath, {
+    //   '.md': (path) => new UnstructuredLoader(path, options),
+    // });
+
+    // const rawDocs = await directoryLoader.load();
+
 
     const loader = new UnstructuredDirectoryLoader(
       filePath,
@@ -25,8 +31,6 @@ export const run = async () => {
     
     // const loader = new PDFLoader(filePath);
     const rawDocs = await loader.load();
-
-    console.log('raw docs', rawDocs);
 
     /* Split text into chunks */
     const textSplitter = new RecursiveCharacterTextSplitter({

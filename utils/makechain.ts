@@ -14,7 +14,7 @@ const CONDENSE_TEMPLATE = `Given the following conversation and a follow up ques
 Follow Up Input: {question}
 Standalone question:`;
 
-const QA_TEMPLATE = `Answer the question based on the context below, and if the question can't be answered based on the context, say "I don't know"
+const QA_TEMPLATE = ` If the question is not related to the context, say "I don't know", otherwise give a detailed response to the question. Use the context to answer the question. Never repeat yourself.
 
 <context>
   {context}
